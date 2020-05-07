@@ -13,6 +13,7 @@ class MyApp extends StatefulWidget {
 }
 
 
+List showingList = new List();
   List peoples = [
     {"name": "Tasfiq","number": "017**11**"},
     {"name": "1Tasfiq1","number": "017**22**"},
@@ -40,14 +41,17 @@ class MyApp extends StatefulWidget {
   class _peoplesState extends State<MyApp> {
     TextEditingController searchController = new TextEditingController();
     String filter;
-  
-    @override  initState() {
-      searchController.addListener(() {
-        setState(() {
-          filter = searchController.text;
-        });
-      });
-    }
+    String searchText;
+
+     @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    setState(() {
+      showingList.addAll(peoples);
+    });
+
+  }
   
     @override  void dispose() {
       searchController.dispose();
@@ -89,38 +93,37 @@ class MyApp extends StatefulWidget {
                  ),
                ),
                TextField(
+                onChanged: (text) {
+                  print(text);
+                  showingList.clear();
+                  for (int i = 0; i < peoples.length; i++) {
+
+                    if (peoples[i]["name"].toLowerCase().toString().contains(text.toLowerCase())) {
+                      setState(() {
+                        showingList.add(peoples[i]);
+                      });
+                    }
+                  }
+                },
                  decoration: InputDecoration(
                    hintText: "Enter name or number"
                  ),
                ),
                Expanded(
                    child: ListView.builder(
-                   itemCount: peoples.length,
+                   itemCount: showingList.length,
                    itemBuilder: (BuildContext context, int index){
                      return Column(
                        children: <Widget>[
-                          filter == null || filter == ""  ?
                             ListTile(
                             leading: CircleAvatar(
                                       backgroundColor: Colors.blue,
-                                      child: Text(peoples[index]["name"][0]),
+                                      child: Text(showingList[index]["name"][0]),
                                       ),
-                           title: Text(peoples[index]["name"]),
-                           subtitle: Text(peoples[index]["number"]),
-                           onTap: () => _onTapItem(context, peoples[index]["name"]),
+                           title: Text(showingList[index]["name"]),
+                           subtitle: Text(showingList[index]["number"]),
+                           onTap: () => _onTapItem(context, showingList[index]["name"]),
                           )
-                          : peoples[index]["name"].toLowerCase().contains(filter.toLowerCase())
-                              ? ListTile(
-                                  title: 
-                                    Text(peoples[index]["name"],),
-                                  subtitle: Text(peoples[index]["number"]),
-                                  leading: new CircleAvatar(
-                                                backgroundColor: Colors.blue,
-                                                child: 
-                                                Text(peoples[index]["name"][0])),
-                                                onTap: () => _onTapItem(context, peoples[index]["name"]),
-                                                )
-                    
                        ]
                                         );
                                        },
@@ -152,4 +155,3 @@ class Peoples {
   const Peoples({this.name, this.number});             
                    
 }
-          
