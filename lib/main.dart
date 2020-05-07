@@ -16,8 +16,8 @@ class MyApp extends StatefulWidget {
 List showingList = new List();
   List peoples = [
     {"name": "Tasfiq","number": "017**11**"},
-    {"name": "1Tasfiq1","number": "017**22**"},
-    {"name": "2Tasfiq2","number": "017**33**"},
+    {"name": "1Tasfiq1","number": "018**22**"},
+    {"name": "2Tasfiq2","number": "016**33**"},
     {"name": "3Tasfiq3","number": "017**44**"},
     {"name": "4Tasfiq4","number": "017**55**"},
     {"name": "5Tasfiq5","number": "017**66**"},
@@ -45,7 +45,6 @@ List showingList = new List();
 
      @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     setState(() {
       showingList.addAll(peoples);
@@ -98,11 +97,11 @@ List showingList = new List();
                   showingList.clear();
                   for (int i = 0; i < peoples.length; i++) {
 
-                    if (peoples[i]["name"].toLowerCase().toString().contains(text.toLowerCase())) {
+                    if (peoples[i]["name"].toLowerCase().toString().contains(text.toLowerCase()) || peoples[i]["number"].toLowerCase().toString().contains(text.toLowerCase())) {
                       setState(() {
                         showingList.add(peoples[i]);
                       });
-                    }
+                    } 
                   }
                 },
                  decoration: InputDecoration(
